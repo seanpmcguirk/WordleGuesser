@@ -1,4 +1,4 @@
-package wordleGuesser;
+package WordleGuesser;
 
 import java.util.Scanner;
 
