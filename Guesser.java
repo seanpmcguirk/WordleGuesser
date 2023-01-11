@@ -6,27 +6,33 @@ import java.util.Scanner;
 
 public class Guesser {
 
-	ArrayList<String> wordList;
-	String wordsFile = "src\\wordleBot\\answers.txt";
+	ArrayList<String> solutionWords;
+	ArrayList<String> allWords;
+	String solutionPath = "C:\\Users\\socce\\eclipse-workspace\\PersonalProjects\\src\\wordleGuesser\\SolutionWords.txt";
+	String allPath = "C:\\Users\\socce\\eclipse-workspace\\PersonalProjects\\src\\wordleGuesser\\AllWords.txt";
 
 	public Guesser() {
-		wordList = new ArrayList<>();
-		putWordsInList(wordsFile);
+		solutionWords = new ArrayList<>();
+		putWordsInList(solutionPath, solutionWords);
+
+		allWords = new ArrayList<>();
+		putWordsInList(allPath, allWords);
 	}
 
 	/**
 	 * @param filePath
 	 * 
-	 * reads the file at filePath and puts each line into a separate index in wordList
+	 *                 reads the file at filePath and puts each line into a separate
+	 *                 index in wordList
 	 */
-	public void putWordsInList(String filePath) {
+	public void putWordsInList(String filePath, ArrayList<String> list) {
 		try {
 			// open file and scan
 			File file = new File(filePath);
 			Scanner scanner = new Scanner(file);
 
 			while (scanner.hasNextLine()) {
-				wordList.add(scanner.nextLine());
+				list.add(scanner.nextLine());
 			}
 			scanner.close();
 		} catch (Exception FileNotFoundException) {
@@ -38,19 +44,24 @@ public class Guesser {
 	/**
 	 * @return
 	 */
-	public static String getGuessWord() {
+	public String getGuessWord() {
 		Scanner scanner = new Scanner(System.in);
 		String guess;
 
 		// get guess in a String and make sure it is valid
 		while (true) {
 			guess = scanner.next().toLowerCase();
-			if (guess.length() == 5)
-				break;
-			else
+
+			if (guess.length() != 5)
 				System.out.print("Word must be 5 letters, try again: ");
+			
+			else if (allWords.contains(guess))
+				return guess;
+			
+			else
+				System.out.print("Not a valid word, try again: ");
 		}
-		return guess;
+
 	}
 
 	/**
@@ -87,9 +98,9 @@ public class Guesser {
 	 * @param index
 	 */
 	public void green(char letter, int index) {
-		for (int i = 0; i < wordList.size(); i++) {
-			if (wordList.get(i).charAt(index) != letter) {
-				wordList.remove(i);
+		for (int i = 0; i < solutionWords.size(); i++) {
+			if (solutionWords.get(i).charAt(index) != letter) {
+				solutionWords.remove(i);
 				i--;
 			}
 		}
@@ -100,17 +111,17 @@ public class Guesser {
 	 * @param index
 	 */
 	public void yellow(char letter, int index) {
-		for (int i = 0; i < wordList.size(); i++) {
-			if (wordList.get(i).charAt(index) == letter) {
-				wordList.remove(i);
+		for (int i = 0; i < solutionWords.size(); i++) {
+			if (solutionWords.get(i).charAt(index) == letter) {
+				solutionWords.remove(i);
 				i--;
 			} else {
 				for (int j = 0; j < 5; j++) {
-					if (wordList.get(i).charAt(j) == letter) {
+					if (solutionWords.get(i).charAt(j) == letter) {
 						break;
 					} else {
 						if (j == 4) {
-							wordList.remove(i);
+							solutionWords.remove(i);
 							i--;
 						}
 					}
@@ -123,10 +134,10 @@ public class Guesser {
 	 * @param letter
 	 */
 	public void gray(char letter) {
-		for (int i = 0; i < wordList.size(); i++) {
+		for (int i = 0; i < solutionWords.size(); i++) {
 			for (int j = 0; j < 5; j++) {
-				if (wordList.get(i).charAt(j) == letter) {
-					wordList.remove(i);
+				if (solutionWords.get(i).charAt(j) == letter) {
+					solutionWords.remove(i);
 					i--;
 					break;
 				}
@@ -177,16 +188,16 @@ public class Guesser {
 				}
 			}
 
-			if (wordList.size() == 1) {
-				System.out.println("The word is '" + wordList.get(0) + "'");
+			if (solutionWords.size() == 1) {
+				System.out.println("The word is '" + solutionWords.get(0) + "'");
 				break;
 			}
-			if (wordList.size() == 0) {
+			if (solutionWords.size() == 0) {
 				System.out.println("Something was entered incorrectly, restart from the beginning");
 				break;
 			}
 			System.out.println("All possible remaining words are listed below");
-			System.out.println(wordList);
+			System.out.println(solutionWords);
 		}
 	}
 }
