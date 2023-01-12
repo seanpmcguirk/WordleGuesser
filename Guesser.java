@@ -19,8 +19,8 @@ public class Guesser {
 
 	ArrayList<String> solutionWords;
 	ArrayList<String> allWords;
-	String solutionPath = "C:\\Users\\socce\\eclipse-workspace\\PersonalProjects\\src\\wordleGuesser\\SolutionWords.txt";
-	String allPath = "C:\\Users\\socce\\eclipse-workspace\\PersonalProjects\\src\\wordleGuesser\\AllWords.txt";
+	String solutionPath = "src\\wordleGuesser\\SolutionWords.txt";
+	String allPath = "src\\wordleGuesser\\AllWords.txt";
 
 	public Guesser() {
 		solutionWords = new ArrayList<>();
